@@ -3,6 +3,7 @@ import numpy as np
 from skimage.color import rgb2lab, lab2rgb, rgb2gray
 from skimage.exposure import adjust_gamma
 from skimage.filters import gaussian
+import matplotlib.pyplot as plt
 
 # Load the image and normalize it.
 image = cv2.imread('./test13.jpg')
@@ -128,8 +129,6 @@ B = pyramid_reconstruct(Rb)
 
 fusion = np.stack([R, G, B], axis=-1)
 
-# Display final image.
-import matplotlib.pyplot as plt
 plt.imshow(fusion)
 plt.title('Multi-scale Fusion Output')
 plt.axis('off')

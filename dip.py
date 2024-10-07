@@ -40,7 +40,6 @@ Isharp = (Iwb + Norm) / 2
 
 # Calculate Weight Maps
 def saliency_detection(image):
-    # Use OpenCV's Saliency API or any custom implementation.
     saliency = cv2.saliency.StaticSaliencyFineGrained_create()
     _, saliency_map = saliency.computeSaliency((image*255).astype(np.uint8))
     return saliency_map

@@ -14,9 +14,9 @@ Ir_mean, Ig_mean, Ib_mean = Ir.mean(), Ig.mean(), Ib.mean()
 
 # Color Compensation.
 alpha = 1
-Irc = Ir + alpha * (Ig_mean - Ir_mean)
+Irc = Ir + alpha * (Ig_mean - Ir_mean)*(1-Ir)*Ig
 alpha = 0.5  
-Ibc = Ib + alpha * (Ig_mean - Ib_mean)
+Ibc = Ib + alpha * (Ig_mean - Ib_mean)*(1-Ib)*Ig
 
 # White Balance (Using Gray World Assumption)
 Iwb = np.stack([Irc, Ig, Ibc], axis=-1)

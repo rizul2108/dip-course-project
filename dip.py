@@ -1,12 +1,12 @@
 import cv2
 import numpy as np
 from skimage.color import rgb2lab, lab2rgb, rgb2gray
-from skimage.exposure import adjust_gamma
-from skimage.filters import gaussian
+from skimage.exposure import adjust_gamma, rescale_intensity
+from skimage.filters import gaussian, unsharp_mask
 import matplotlib.pyplot as plt
 
 # Load the image and normalize it.
-image = cv2.imread('./test13.jpg')
+image = cv2.imread('./images/n_l_99_.jpg')
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) / 255.0
 
 Ir, Ig, Ib = image[:,:,0], image[:,:,1], image[:,:,2]
@@ -16,13 +16,16 @@ Ir_mean, Ig_mean, Ib_mean = Ir.mean(), Ig.mean(), Ib.mean()
 # Color Compensation.
 alpha = 1
 Irc = Ir + alpha * (Ig_mean - Ir_mean)*(1-Ir)*Ig
-alpha = 0.5  
+alpha = 0.5
 Ibc = Ib + alpha * (Ig_mean - Ib_mean)*(1-Ib)*Ig
 
 # White Balance (Using Gray World Assumption)
 Iwb = np.stack([Irc, Ig, Ibc], axis=-1)
 
-Igamma = adjust_gamma(Iwb, gamma=2)
+# Rescale intensity to ensure non-negative values
+Iwb_rescaled = rescale_intensity(Iwb, in_range=(0, 1))
+
+Igamma = adjust_gamma(Iwb_rescaled, gamma=2)
 
 # Image Sharpening using Unsharp Masking.
 sigma = 20
